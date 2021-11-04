@@ -11,8 +11,9 @@ export function hexToRGB (hex: string): number[] | boolean {
   return false
 }
 
-export function uniqueId(): number {
-  const min = 1000000000000000000;
-  const max = 9223372036854775808;
-  return Math.floor(Math.random() * (max - min) + min);
+export function uniqueId(): string {
+  /*const min = 1000000000000000000;
+  const max = 9999999999999999999;
+  return Math.floor(Math.random() * (max - min) + min).toString();*/
+  return Date.now().toString()
 }

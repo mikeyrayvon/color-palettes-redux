@@ -1,5 +1,5 @@
 export interface Color {
-  id: number
+  id: string
   hex: string
   rgb: string
   name: string
@@ -7,9 +7,8 @@ export interface Color {
 }
 
 export interface Palette {
-  id: number
-  created_at?: Date
+  id: string
   title: string
   description: string
-  colors: number[] | []
+  colors: string[] | []
 }
