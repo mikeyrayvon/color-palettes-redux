@@ -1,0 +1,20 @@
+/* purgecss start ignore */
+
+@tailwind base;
+@tailwind components;
+
+/* purgecss end ignore */
+
+html, body {
+  font-size: 14px;
+}
+
+.hover-child {
+  @apply opacity-0;
+}
+
+.hover-parent:hover > .hover-child {
+  @apply opacity-100;
+}
+
+@tailwind utilities;
