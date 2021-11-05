@@ -3,7 +3,6 @@ export interface Color {
   hex: string
   rgb: string
   name: string
-  order: number
 }
 
 export interface Palette {

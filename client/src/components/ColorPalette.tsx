@@ -6,58 +6,17 @@ import NewColor from "./NewColor";
 
 interface Props {
   palette: Palette
+  handleDrag(e: React.DragEvent): void
+  handleDrop(e: React.DragEvent): void
 }
 
-const ColorPalette: React.FC<Props> = ({ palette }) => {
+const ColorPalette: React.FC<Props> = ({ palette, handleDrag, handleDrop }) => {
   const { 
     colors, 
-    handleDroppedColor,
     changeTitle,
     updateTitle,
     deletePalette
   } = useAppContext()
-
-  const [dragId, setDragId] = useState<null | string>(null)
-  
-  const handleDrag = (e: React.DragEvent) => {
-    setDragId(e.currentTarget.id)
-  };
-
-  const handleDrop = (e: React.DragEvent) => {
-    const dragColor: Color | undefined = colors.find(c => c.id === dragId)
-    const dropColor: Color | undefined = colors.find(c => c.id === e.currentTarget.id)
-
-    if (dragColor && dropColor) {
-      handleDroppedColor(dragColor, dropColor)
-    }
-  }
-
-  const renderColors = () => {
-    const paletteColors = palette?.colors?.map(colorId => {
-      return colors.find(c => c.id === colorId)
-    })
-    const paletteOrdered = paletteColors?.sort((a, b) => {
-      if (a && b)
-        return a.order - b.order
-      return 0
-    })
-    return (
-      paletteOrdered?.map(c => {
-        if (c !== undefined) {
-          return (
-            <ColorPicker 
-              key={`${c.id}`}
-              paletteId={palette.id}
-              color={c} 
-              handleDrag={handleDrag}
-              handleDrop={handleDrop}
-              />
-          )
-        }
-        return
-      })
-    )
-  } 
   
   return (
     <div 
@@ -65,7 +24,7 @@ const ColorPalette: React.FC<Props> = ({ palette }) => {
       >
       <div className='flex justify-between items-center'>
         <input 
-          className='border-0 border-b border-transparent text-xl font-bold px-0 focus:ring-transparent hover:border-gray-200 focus:border-black' 
+          className='border-0 border-b border-transparent text-xl font-bold px-0 focus:ring-transparent hover:border-gray-300 focus:border-gray-500 pb-1' 
           value={palette.title} 
           type='text' 
           onChange={e => changeTitle(e, palette.id)}
@@ -78,7 +37,23 @@ const ColorPalette: React.FC<Props> = ({ palette }) => {
       </div>
       <div className='flex flex-wrap'>
         <p>{palette.description}</p>
-        {renderColors()}
+        {
+          palette?.colors?.map(colorId => {
+            const color = colors.find(c => c.id === colorId)
+            if (color) {
+              return (
+                <ColorPicker 
+                  key={`${color.id}`}
+                  paletteId={palette.id}
+                  color={color} 
+                  handleDrag={handleDrag}
+                  handleDrop={handleDrop}
+                  />
+              )
+            }
+            return
+          })
+        }
         <NewColor paletteId={palette.id} />
       </div>
     </div>
