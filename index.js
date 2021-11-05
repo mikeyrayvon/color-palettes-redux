@@ -76,26 +76,41 @@ app.post('/api/addItem', (req, res) => {
 app.post('/api/updateItem', (req, res) => {
   const { table, id, updates } = req.body
 
+  /**
+   * Assemble UpdateExpression
+   * 'SET keyA = :val1, keyB = :val2' 
+   */
   const UpdateExpression = 'SET ' + updates.map((u, i) => {
     return `#${u.key} = :val${i + 1}`
   }).join(', ')
-  console.log('UpdateExpression', UpdateExpression)
 
+  /** 
+   * Assemble ExpressionAttributeValues
+   * {
+   *   ':val1': 'value1',
+   *   ':val2': 'value2'
+   * }
+   */
   const ExpressionAttributeValues = updates.reduce((cur, u, i) => {
     return {
       ...cur,
       [`:val${i + 1}`]: u.value,
     };
   }, {})
-  console.log('ExpressionAttributeValues', ExpressionAttributeValues)
 
+  /**
+   * Assemble ExpressionAttributeNames
+   * {
+   *   '#key1': 'key1',
+   *   '#key2': 'key2'
+   * }
+   */
   const ExpressionAttributeNames = updates.reduce((cur, u) => {
     return {
       ...cur,
       [`#${u.key}`]: u.key,
     };
   }, {})
-  console.log('ExpressionAttributeNames', ExpressionAttributeNames)
 
   axios.put(ENDPOINT, JSON.stringify({
     TableName: table,
