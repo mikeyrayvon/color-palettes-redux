@@ -9,7 +9,7 @@ interface AppContextValue {
   colors: Color[] | []
   addColor(paletteId: string): void
   addPalette(): void
-  updateValues(color: Color, hex: string): void
+  changeColor(color: Color, hex: string): void
   updateColor(color: Color): void
   deleteColor(deletedColor: Color, paletteId: string): void
   handleDroppedColor(dragColor: Color, dropColor: Color): void | null
@@ -24,7 +24,7 @@ const AppContext = createContext<AppContextValue>({
   colors: [],
   addColor: () => {},
   addPalette: () => {},
-  updateValues: () => {},
+  changeColor: () => {},
   updateColor: () => {},
   deleteColor: () => {},
   handleDroppedColor: () => {},
@@ -136,11 +136,11 @@ const AppContextProvider: React.FC = ({ children }) => {
   }
 
   /**
-   * Update color hex in app state
+   * Update color hex & rgb in app state
    * @param color Color to update
    * @param hex New hexidecimal value of color
    */
-  const updateValues = (color: Color, hex: string) => {
+  const changeColor = (color: Color, hex: string) => {
     // update color with RGB value
     const rgb: number[] | boolean = hexToRGB(hex.slice(1))
     const updatedColor: Color = {
@@ -347,7 +347,7 @@ const AppContextProvider: React.FC = ({ children }) => {
         colors,
         addColor,
         addPalette,
-        updateValues,
+        changeColor,
         updateColor,
         deleteColor,
         handleDroppedColor,

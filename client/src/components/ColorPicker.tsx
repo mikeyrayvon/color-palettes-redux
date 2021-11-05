@@ -16,14 +16,14 @@ const ColorPicker: React.FC<Props> = ({
   handleDrop
 }) => {
   const { 
-    updateValues,
+    changeColor,
     updateColor,
     deleteColor 
   } = useAppContext()
   const [hovered, setHovered] = useState(false)
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    updateValues(color, e.target.value)
+    changeColor(color, e.target.value)
   }
 
   const handleBlur = (e: React.FocusEvent<HTMLInputElement>) => {
