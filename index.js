@@ -1,3 +1,8 @@
+/**
+ * DynamoDB reference:
+ * https://docs.aws.amazon.com/amazondynamodb/latest/APIReference/API_Operations_Amazon_DynamoDB.html
+ */
+
 const express = require('express');
 const cors = require('cors');
 const axios = require('axios');
@@ -78,7 +83,7 @@ app.post('/api/updateItem', (req, res) => {
 
   /**
    * Assemble UpdateExpression
-   * 'SET keyA = :val1, keyB = :val2' 
+   * 'SET '#key1' = :val1, '#key2' = :val2' 
    */
   const UpdateExpression = 'SET ' + updates.map((u, i) => {
     return `#${u.key} = :val${i + 1}`
