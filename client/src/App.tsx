@@ -13,7 +13,7 @@ const App = () => {
   return (
     <div className='App'>
       <Layout>
-        <div className='container mx-auto py-20'>
+        <div className='max-w-[900px] mx-auto py-20 px-8'>
           <h1 className='text-3xl font-bold mb-12'>Color Palettes</h1>
           <div>
             {palettes && palettes.length > 0 &&
