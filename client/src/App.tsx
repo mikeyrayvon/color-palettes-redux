@@ -15,22 +15,26 @@ const App = () => {
       <Layout>
         <div className='max-w-[900px] mx-auto py-20 px-8'>
           <h1 className='text-3xl font-bold mb-12'>Color Palettes</h1>
-          <div>
-            {palettes && palettes.length > 0 &&
-              palettes.sort((a: Palette, b: Palette) => {
-                if (a && b && a.id && b.id) {
-                  return new Date(parseInt(a.id)).getTime() - new Date(parseInt(b.id)).getTime()
-                }
-                return 0
-              })
-                .map((p: Palette) => {
-                  return (
-                    <ColorPalette key={p.id} palette={p} />
-                  )
+          {palettes && palettes.length > 0 ? (
+            <div>
+              {
+                palettes.sort((a: Palette, b: Palette) => {
+                  if (a && b && a.id && b.id) {
+                    return new Date(parseInt(a.id)).getTime() - new Date(parseInt(b.id)).getTime()
+                  }
+                  return 0
                 })
-            }
-            <NewPalette />
-          </div>
+                  .map((p: Palette) => {
+                    return (
+                      <ColorPalette key={p.id} palette={p} />
+                    )
+                  })
+              }
+              <NewPalette />
+            </div>
+          ) : (
+            <div>Mixing colors...</div>
+          )}
         </div>
       </Layout>
     </div>
