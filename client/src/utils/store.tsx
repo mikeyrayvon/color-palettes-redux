@@ -294,6 +294,11 @@ const AppContextProvider: React.FC = ({ children }) => {
     }
   }
 
+  /**
+   * Change palette title in local state
+   * @param e Input event
+   * @param paletteId ID of the palette to update
+   */
   const changeTitle = (e: React.ChangeEvent<HTMLInputElement>, paletteId: string) => {
     const newTitle = e.currentTarget.value
     const updatedPalettes = palettes.map(p => {
@@ -308,6 +313,10 @@ const AppContextProvider: React.FC = ({ children }) => {
     setPalettes(updatedPalettes)
   }
 
+  /**
+   * Update palette title in database
+   * @param palette Palette to update
+   */
   const updateTitle = (palette: Palette) => {
     postData('api/updateItem', { 
       table: 'palettes',
@@ -321,6 +330,11 @@ const AppContextProvider: React.FC = ({ children }) => {
     })
   }
 
+  /**
+   * Delete palette & associated colors
+   * @param paletteId ID of palette to delete
+   * @param colorIds IDs of colors on palette
+   */
   const deletePalette = (paletteId: string, colorIds: string[]) => {
     const filteredPalettes = palettes.filter(p => p.id !== paletteId)
     const filteredColors = colors.filter(c => !colorIds.includes(c.id));
