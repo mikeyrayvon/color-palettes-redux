@@ -1,5 +1,7 @@
-import React, { useState } from "react";
-import { useAppContext } from "../utils/store";
+import React, { ChangeEvent, useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { useAppContext } from "../utils/context";
+import { AppState } from "../utils/reducers";
 import { Color, Palette } from "../utils/types"
 import ColorPicker from "./ColorPicker";
 import NewColor from "./NewColor";
@@ -11,12 +13,32 @@ interface Props {
 }
 
 const ColorPalette: React.FC<Props> = ({ palette, handleDrag, handleDrop }) => {
-  const { 
+  const colors = useSelector<AppState, AppState['colors']>(state => state.colors)
+  const dispatch = useDispatch()
+
+  const [title, setTitle] = useState('')
+
+  useEffect(() => {
+    setTitle(palette.title)
+  }, [palette.title])
+
+  /*const { 
     colors, 
-    changeTitle,
     updateTitle,
     deletePalette
-  } = useAppContext()
+  } = useAppContext()*/
+
+  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
+    setTitle(e.target.value)
+  }
+
+  const handleBlur = () => {
+    dispatch({type: 'UPDATE_TITLE', payload: {title, paletteId: palette.id}})
+  }
+
+  const handleDelete = () => {
+    dispatch({type: 'REMOVE_PALETTE', payload: {paletteId: palette.id, colorIds: palette.colors}})
+  }
   
   return (
     <div 
@@ -27,12 +49,12 @@ const ColorPalette: React.FC<Props> = ({ palette, handleDrag, handleDrop }) => {
           className='border-0 border-b border-transparent text-xl font-bold px-0 focus:ring-transparent hover:border-gray-300 focus:border-gray-500 pb-1' 
           value={palette.title} 
           type='text' 
-          onChange={e => changeTitle(e, palette.id)}
-          onBlur={() => updateTitle(palette)}
+          onChange={handleChange}
+          onBlur={handleBlur}
           />
           <button 
             className='opacity-0 group-hover:opacity-100 py-1 px-2 rounded-lg bg-gray-400 hover:bg-gray-600 text-white' 
-            onClick={() => deletePalette(palette.id, palette.colors)}
+            onClick={handleDelete}
             >Remove</button>
       </div>
       <div className='flex flex-wrap'>

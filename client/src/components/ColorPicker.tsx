@@ -1,5 +1,7 @@
-import React, { useState } from 'react'
-import { useAppContext } from '../utils/store'
+import React, { useEffect, useState } from 'react'
+import { useDispatch } from 'react-redux'
+import { useAppContext } from '../utils/context'
+import { hexToRGB } from '../utils/tools'
 import type { Color } from '../utils/types'
 
 interface Props {
@@ -15,24 +17,30 @@ const ColorPicker: React.FC<Props> = ({
   handleDrag,
   handleDrop
 }) => {
-  const { 
-    changeColor,
-    updateColor,
-    deleteColor 
-  } = useAppContext()
-  const [hovered, setHovered] = useState(false)
+  const [values, setValues] = useState({ rgb: '', hex: '' })
+  const dispatch = useDispatch()
+
+  useEffect(() => {
+    setValues({
+      rgb: color.rgb,
+      hex: color.hex
+    })
+  }, [color])
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    changeColor(color, e.target.value)
+    const rgb = hexToRGB(e.target.value.slice(1)).toString()
+    setValues({
+      rgb,
+      hex: e.target.value
+    })
   }
 
-  const handleBlur = (e: React.FocusEvent<HTMLInputElement>) => {
-    updateColor(color)
+  const handleBlur = () => {
+    dispatch({type: 'UPDATE_COLOR', payload: {...color, rgb: values.rgb, hex: values.hex}})
   }
 
-  const handleDelete = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
-    e.preventDefault()
-    deleteColor(color, paletteId)
+  const handleDelete = () => {
+    dispatch({type: 'REMOVE_COLOR', payload: {colorId: color.id, paletteId}})
   }
 
   return (

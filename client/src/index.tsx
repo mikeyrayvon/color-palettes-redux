@@ -3,13 +3,15 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
-import { AppContextProvider } from './utils/store';
+import { AppContextProvider } from './utils/context';
+import { Provider } from 'react-redux'
+import { store } from './utils/store';
 
 ReactDOM.render(
   <React.StrictMode>
-    <AppContextProvider>
+    <Provider store={store}>
       <App />
-    </AppContextProvider>
+    </Provider>
   </React.StrictMode>,
   document.getElementById('root')
 );

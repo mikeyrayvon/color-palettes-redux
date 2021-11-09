@@ -1,5 +1,5 @@
 import React from 'react'
-import { useAppContext } from '../utils/store'
+import { useAppContext } from '../utils/context'
 
 const NewPalette: React.FC = () => {
   const { 

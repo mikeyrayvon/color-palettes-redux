@@ -1,30 +1,26 @@
-import React, { useState } from 'react';
-import Layout from './components/Layout';
-import { useAppContext } from './utils/store';
+import React, { useState } from 'react'
+import Layout from './components/Layout'
+import { useAppContext } from './utils/context'
 import { Color, Palette } from './utils/types'
-import ColorPalette from './components/ColorPalette';
-import NewPalette from './components/NewPalette';
+import ColorPalette from './components/ColorPalette'
+import NewPalette from './components/NewPalette'
+import { useDispatch, useSelector } from 'react-redux'
+import { AppState } from './utils/reducers'
 
 const App = () => {
-  const { 
-    palettes,
-    colors,
-    handleDroppedColor,
-    loading
-  } = useAppContext()
+  const palettes = useSelector<AppState, AppState['palettes']>(state => state.palettes)
+  const loading = useSelector<AppState, AppState['loading']>(state => state.loading)
+  const dispatch = useDispatch()
 
   const [dragId, setDragId] = useState<null | string>(null)
   
   const handleDrag = (e: React.DragEvent) => {
     setDragId(e.currentTarget.id)
-  };
+  }
 
   const handleDrop = (e: React.DragEvent) => {
-    const dragColor: Color | undefined = colors.find(c => c.id === dragId)
-    const dropColor: Color | undefined = colors.find(c => c.id === e.currentTarget.id)
-    if (dragColor && dropColor) {
-      handleDroppedColor(dragColor, dropColor)
-    }
+    const dropId = e.currentTarget.id
+    dispatch({type: 'REORDER_COLORS', payload: {dragId, dropId}})
   }
 
   return (
@@ -60,7 +56,7 @@ const App = () => {
         </div>
       </Layout>
     </div>
-  );
+  )
 }
 
-export default App;
+export default App
